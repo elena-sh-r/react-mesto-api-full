@@ -1,0 +1,7 @@
+.element {
+  max-width: 282px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  margin: 18px auto 0 auto;
+}
