@@ -31,6 +31,7 @@ const getErrorCode = (err) => {
   return COMMON_ERROR_CODE;
 };
 
+app.use(cors());
 app.options('*', cors());
 app.use(helmet());
 
