@@ -50,7 +50,7 @@ class Auth {
 }
 
 const auth = new Auth({
-  url: 'https://auth.nomoreparties.co',
+  url: 'http://api.mesto.elena.nomoredomains.monster',
 });
 
 export default auth;

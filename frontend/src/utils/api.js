@@ -1,6 +1,6 @@
 class Api {
-  constructor({url, token, cohortId}) {
-    this._apiUrl = `${url}/v1/${cohortId}`;
+  constructor({url, token}) {
+    this._apiUrl = url;
     this._token = token;
   }
 
@@ -113,9 +113,8 @@ class Api {
 }
 
 const api = new Api({
-  url: 'https://mesto.nomoreparties.co',
+  url: 'http://api.mesto.elena.nomoredomains.monster',
   token: 'c8082a6e-4367-4fd0-bc5f-dacd70da1e5b',
-  cohortId: 'cohort-23',
 });
 
 export default api;
