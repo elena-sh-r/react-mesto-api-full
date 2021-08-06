@@ -50,7 +50,7 @@ class Auth {
 }
 
 const auth = new Auth({
-  url: 'http://api.mesto.elena.nomoredomains.monster'
+  url: 'https://api.mesto.elena.nomoredomains.monster'
 });
 
 export default auth;

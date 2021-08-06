@@ -116,7 +116,7 @@ class Api {
 }
 
 const api = new Api({
-  url: 'http://api.mesto.elena.nomoredomains.monster'
+  url: 'https://api.mesto.elena.nomoredomains.monster'
 });
 
 export default api;
