@@ -21,8 +21,8 @@ function App() {
     checkUser({token: localStorage.getItem('token')});
 
     api.getOwnerInfo()
-    .then((owner) => {
-      setCurrentUser(owner);
+    .then((res) => {
+      setCurrentUser(res.data);
     })
     .catch((err) => {
       console.log(err);

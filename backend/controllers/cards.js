@@ -14,7 +14,7 @@ module.exports.deleteCard = (req, res, next) => {
   Card.findById(req.params.id)
     .orFail(new NotFoundError(NOT_FOUND_ERROR_TEXT))
     .then((card) => {
-      if (card.owner === req.user._id) {
+      if (card.owner == req.user._id) {
         Card.remove(card)
           .then((ownerCard) => res.send({ data: ownerCard }));
       } else {

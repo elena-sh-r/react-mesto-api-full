@@ -19,8 +19,8 @@ function CardList(props) {
 
   useEffect(() => {
     api.getCards()
-    .then((cards) => {
-      setCards(cards);
+    .then((res) => {
+      setCards(res.data);
     })
     .catch((err) => {
       console.log(err);
@@ -52,8 +52,8 @@ function CardList(props) {
 
   function handleUpdateUser({name, about}) {
     api.setOwnerInfo(name, about)
-      .then((userData) => {
-        props.setCurrentUser(userData);
+      .then((res) => {
+        props.setCurrentUser(res.data);
         closeAllPopups();
       })
       .catch((err) => {
@@ -63,8 +63,8 @@ function CardList(props) {
 
   function handleUpdateAvatar({avatar}) {
     api.setAvatar(avatar)
-      .then((userData) => {
-        props.setCurrentUser(userData);
+      .then((res) => {
+        props.setCurrentUser(res.data);
         closeAllPopups();
       })
       .catch((err) => {
@@ -74,12 +74,12 @@ function CardList(props) {
 
   function handleCardLike(card) {
     // Снова проверяем, есть ли уже лайк на этой карточке
-    const isLiked = card.likes.some(i => i._id === currentUser._id);
+    const isLiked = card.likes.some(i => i === currentUser._id);
     
     // Отправляем запрос в API и получаем обновлённые данные карточки
     api.changeLikeCardStatus(card._id, !isLiked)
-      .then((newCard) => {
-          setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
+      .then((res) => {
+          setCards((state) => state.map((c) => c._id === card._id ? res.data : c));
       })
       .catch((err) => {
         console.log(err);
@@ -87,10 +87,9 @@ function CardList(props) {
   }
 
   function handleCardDelete(cardId) {
-    console.log(cardId);
     api.deleteCard(cardId)
       .then(() => {
-        setCards(cards => cards.filter(c => c.owner._id !== currentUser._id));
+        setCards(cards => cards.filter(c => c.owner !== currentUser._id));
       })
       .catch((err) => {
         console.log(err);
@@ -99,8 +98,8 @@ function CardList(props) {
 
   function handleAddPlaceSubmit({name, link}) {
     api.setCard(name, link)
-      .then((newCard) => {
-        setCards([newCard, ...cards]);
+      .then((res) => {
+        setCards([res.data, ...cards]);
         closeAllPopups();
       })
       .catch((err) => {

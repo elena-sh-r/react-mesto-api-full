@@ -62,7 +62,7 @@ class Api {
   }
 
   setCardLike(id) {
-    return fetch(`${this._apiUrl}/cards/likes/${id}`, {
+    return fetch(`${this._apiUrl}/cards/${id}/likes`, {
       method: 'PUT',
       headers: {
         authorization: this._getToken()
@@ -72,7 +72,7 @@ class Api {
   }
 
   deleteCardLike(id) {
-    return fetch(`${this._apiUrl}/cards/likes/${id}`, {
+    return fetch(`${this._apiUrl}/cards/${id}/likes`, {
       method: 'DELETE',
       headers: {
         authorization: this._getToken()
@@ -116,7 +116,8 @@ class Api {
 }
 
 const api = new Api({
-  url: 'http://api.mesto.elena.nomoredomains.monster'
+  //url: 'http://api.mesto.elena.nomoredomains.monster'
+  url: 'http://localhost:3000'
 });
 
 export default api;
