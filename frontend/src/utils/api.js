@@ -1,13 +1,12 @@
 class Api {
-  constructor({url, token}) {
+  constructor({url}) {
     this._apiUrl = url;
-    this._token = token;
   }
 
   getOwnerInfo() {
     return fetch(`${this._apiUrl}/users/me`, {
       headers: {
-        authorization: this._token
+        authorization: this._getToken()
       }
     })
     .then(res => this._checkResponse(res));
@@ -17,7 +16,7 @@ class Api {
     return fetch(`${this._apiUrl}/users/me`, {
       method: 'PATCH',
       headers: {
-        authorization: this._token,
+        authorization: this._getToken(),
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
@@ -31,7 +30,7 @@ class Api {
   getCards() {
     return fetch(`${this._apiUrl}/cards`, {
       headers: {
-        authorization: this._token
+        authorization: this._getToken()
       }
     })
     .then(this._checkResponse);
@@ -41,7 +40,7 @@ class Api {
     return fetch(`${this._apiUrl}/cards`, {
       method: 'POST',
       headers: {
-        authorization: this._token,
+        authorization: this._getToken(),
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
@@ -56,7 +55,7 @@ class Api {
     return fetch(`${this._apiUrl}/cards/${id}`, {
       method: 'DELETE',
       headers: {
-        authorization: this._token
+        authorization: this._getToken()
       }
     })
     .then(this._checkResponse);
@@ -66,7 +65,7 @@ class Api {
     return fetch(`${this._apiUrl}/cards/likes/${id}`, {
       method: 'PUT',
       headers: {
-        authorization: this._token
+        authorization: this._getToken()
       }
     })
     .then(this._checkResponse);
@@ -76,7 +75,7 @@ class Api {
     return fetch(`${this._apiUrl}/cards/likes/${id}`, {
       method: 'DELETE',
       headers: {
-        authorization: this._token
+        authorization: this._getToken()
       }
     })
     .then(this._checkResponse);
@@ -94,7 +93,7 @@ class Api {
     return fetch(`${this._apiUrl}/users/me/avatar`, {
       method: 'PATCH',
       headers: {
-        authorization: this._token,
+        authorization: this._getToken(),
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
@@ -110,11 +109,14 @@ class Api {
     }
     return Promise.reject(`Ошибка: ${res.status}`);
   }
+
+  _getToken(){
+    return 'Bearer ' + localStorage.getItem('token');
+  }
 }
 
 const api = new Api({
-  url: 'http://api.mesto.elena.nomoredomains.monster',
-  token: 'c8082a6e-4367-4fd0-bc5f-dacd70da1e5b',
+  url: 'http://api.mesto.elena.nomoredomains.monster'
 });
 
 export default api;
