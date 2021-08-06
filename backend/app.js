@@ -30,9 +30,28 @@ const getErrorCode = (err) => {
   return COMMON_ERROR_CODE;
 };
 
+const DEFAULT_ALLOWED_METHODS = 'GET,HEAD,PUT,PATCH,POST,DELETE';
+
+const allowedCors = [
+  'https://mesto.elena.nomoredomains.monster',
+  'http://mesto.elena.nomoredomains.monster',
+  'localhost:3000',
+];
+
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  const { method } = req;
+  const { origin } = req.headers;
+  const requestHeaders = req.headers['access-control-request-headers'];
+
+  if (method === 'OPTIONS') {
+    res.header('Access-Control-Allow-Methods', DEFAULT_ALLOWED_METHODS);
+    res.header('Access-Control-Allow-Headers', requestHeaders);
+  }
+
+  if (allowedCors.includes(origin)) {
+    res.header('Access-Control-Allow-Origin', allowedCors);
+  }
+
   next();
 });
 
