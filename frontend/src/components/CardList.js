@@ -73,10 +73,8 @@ function CardList(props) {
   }
 
   function handleCardLike(card) {
-    // Снова проверяем, есть ли уже лайк на этой карточке
     const isLiked = card.likes.some(i => i === currentUser._id);
     
-    // Отправляем запрос в API и получаем обновлённые данные карточки
     api.changeLikeCardStatus(card._id, !isLiked)
       .then((res) => {
           setCards((state) => state.map((c) => c._id === card._id ? res.data : c));
@@ -89,7 +87,7 @@ function CardList(props) {
   function handleCardDelete(cardId) {
     api.deleteCard(cardId)
       .then(() => {
-        setCards(cards => cards.filter(c => c.owner !== currentUser._id));
+        setCards(cards => cards.filter(c => c._id !== cardId));
       })
       .catch((err) => {
         console.log(err);

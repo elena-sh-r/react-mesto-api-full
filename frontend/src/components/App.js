@@ -27,7 +27,7 @@ function App() {
     .catch((err) => {
       console.log(err);
     });
-  }, []);
+  }, [loggedIn]);
 
   function processRegister({email, password}) {
     auth.signUp({email, password})
@@ -75,6 +75,7 @@ function App() {
   function logout() {
     setLoggedIn(false);
     setEmail('');
+    setCurrentUser(null);
     localStorage.removeItem('token');
   }
 
