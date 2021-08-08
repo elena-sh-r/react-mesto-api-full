@@ -2,7 +2,6 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const helmet = require('helmet');
-const cors = require('cors');
 const { celebrate, Joi, errors } = require('celebrate');
 const {
   login,
@@ -33,8 +32,6 @@ const getErrorCode = (err) => {
   return COMMON_ERROR_CODE;
 };
 
-//app.use(cors());
-
 const allowedCors = [
   'https://mesto.elena.nomoredomains.monster',
   'http://mesto.elena.nomoredomains.monster',
@@ -52,7 +49,7 @@ app.use((req, res, next) => {
   }
 
   if (allowedCors.includes(origin)) {
-    res.header('Access-Control-Allow-Origin', allowedCors);
+    res.header('Access-Control-Allow-Origin', origin);
   }
 
   next();
