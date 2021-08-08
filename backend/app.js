@@ -11,6 +11,8 @@ const {
 const auth = require('./middlewares/auth');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 
+const DEFAULT_ALLOWED_METHODS = 'GET,HEAD,PUT,PATCH,POST,DELETE';
+
 const VALIDATION_ERROR_CODE = 400;
 const NOT_FOUND_ERROR_CODE = 404;
 const CONFLICTING_ERROR_CODE = 409;
@@ -31,8 +33,31 @@ const getErrorCode = (err) => {
   return COMMON_ERROR_CODE;
 };
 
-app.use(cors());
-app.options('*', cors());
+//app.use(cors());
+
+const allowedCors = [
+  'https://mesto.elena.nomoredomains.monster',
+  'http://mesto.elena.nomoredomains.monster',
+  'localhost:3000',
+];
+
+app.use((req, res, next) => {
+  const { method } = req;
+  const { origin } = req.headers;
+  const requestHeaders = req.headers['access-control-request-headers'];
+
+  if (method === 'OPTIONS') {
+    res.header('Access-Control-Allow-Methods', DEFAULT_ALLOWED_METHODS);
+    res.header('Access-Control-Allow-Headers', requestHeaders);
+  }
+
+  if (allowedCors.includes(origin)) {
+    res.header('Access-Control-Allow-Origin', allowedCors);
+  }
+
+  next();
+});
+
 app.use(helmet());
 
 app.use(bodyParser.json());
