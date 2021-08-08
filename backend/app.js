@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const helmet = require('helmet');
+const cors = require('cors');
 const { celebrate, Joi, errors } = require('celebrate');
 const {
   login,
@@ -30,12 +31,7 @@ const getErrorCode = (err) => {
   return COMMON_ERROR_CODE;
 };
 
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', 'https://mesto.elena.nomoredomains.monster');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-  next();
-});
-
+app.use(cors());
 app.use(helmet());
 
 app.use(bodyParser.json());
