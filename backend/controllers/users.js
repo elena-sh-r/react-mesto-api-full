@@ -5,9 +5,9 @@ const User = require('../models/user');
 const NotFoundError = require('../errors/not-found-error');
 
 const NOT_FOUND_ERROR_TEXT = 'Запрашиваемый пользователь не найден';
-const { NODE_ENV, JWT_SECRET } = process.env;
 
 dotenv.config();
+const { NODE_ENV, JWT_SECRET } = process.env;
 
 module.exports.getUsers = (req, res, next) => {
   User.find({})

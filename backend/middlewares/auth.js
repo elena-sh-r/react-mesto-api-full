@@ -1,3 +1,4 @@
+const dotenv = require('dotenv');
 const jwt = require('jsonwebtoken');
 const UnauthorizedError = require('../errors/unauthorized-error');
 
