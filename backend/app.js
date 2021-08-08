@@ -32,6 +32,7 @@ const getErrorCode = (err) => {
 };
 
 app.use(cors());
+app.options('*', cors());
 app.use(helmet());
 
 app.use(bodyParser.json());
