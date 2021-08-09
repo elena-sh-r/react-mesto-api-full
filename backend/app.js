@@ -4,20 +4,29 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const helmet = require('helmet');
 const { celebrate, Joi, errors } = require('celebrate');
+const validator = require('validator');
 const {
   login,
   createUser,
 } = require('./controllers/users');
 const auth = require('./middlewares/auth');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
+const NotFoundError = require('./errors/not-found-error');
 
 const VALIDATION_ERROR_CODE = 400;
-const NOT_FOUND_ERROR_CODE = 404;
 const CONFLICTING_ERROR_CODE = 409;
 const COMMON_ERROR_CODE = 500;
 
 const { PORT = 3000 } = process.env;
 const app = express();
+
+const urlValidationMethod = (value) => {
+  const result = validator.isURL(value);
+  if (result) {
+    return value;
+  }
+  throw new Error('URL validation err');
+};
 
 const getErrorCode = (err) => {
   if (err.name === 'ValidationError' || err.name === 'CastError') {
@@ -59,7 +68,7 @@ app.post('/signin', celebrate({
     password: Joi.string().required().min(8),
     name: Joi.string().min(2).max(30),
     about: Joi.string().min(2).max(30),
-    avatar: Joi.string(),
+    avatar: Joi.string().custom(urlValidationMethod),
   }).unknown(true),
 }), login);
 app.post('/signup', celebrate({
@@ -68,7 +77,7 @@ app.post('/signup', celebrate({
     password: Joi.string().required().min(8),
     name: Joi.string().min(2).max(30),
     about: Joi.string().min(2).max(30),
-    avatar: Joi.string(),
+    avatar: Joi.string().custom(urlValidationMethod),
   }).unknown(true),
 }), createUser);
 
@@ -77,8 +86,8 @@ app.use(auth);
 app.use('/users', require('./routes/users'));
 app.use('/cards', require('./routes/cards'));
 
-app.get('*', (req, res) => {
-  res.status(NOT_FOUND_ERROR_CODE).send({ message: 'Запрашиваемый ресурс не найден' });
+app.get('*', () => {
+  throw new NotFoundError('Запрашиваемый ресурс не найден');
 });
 
 app.use(errorLogger);
