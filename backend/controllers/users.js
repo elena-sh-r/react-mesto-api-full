@@ -40,7 +40,7 @@ module.exports.createUser = (req, res, next) => {
     .then((hash) => User.create({ ...user, password: hash })
       .then((newUser) => {
         const userToReturn = newUser;
-        delete userToReturn.password;
+        userToReturn.password = null;
         res.send({ data: userToReturn });
       })
       .catch(next));
